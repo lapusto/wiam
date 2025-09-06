@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Input from "../../components/Form/Input/Input";
 import Select from "../../components/Form/Select/Select";
 import { useFormData } from "../../hooks/useFormData";
+import { useNavigate } from "react-router-dom";
 
 interface Job {
     name: string;
@@ -13,6 +14,7 @@ const AddressJobData: React.FC = () => {
     const { data, setFormValues } = useFormData();
     const [jobs, setJobs] = useState<Job[]>([]);
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -31,12 +33,12 @@ const AddressJobData: React.FC = () => {
         setErrors(newErrors);
 
         if (Object.keys(newErrors).length === 0) {
-            return true
+            navigate("/loan");
         }
     };
 
     const handleBack = () => {
-
+        window.history.back();
     };
 
     return (
