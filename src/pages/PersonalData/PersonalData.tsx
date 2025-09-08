@@ -8,25 +8,26 @@ import { personalDataSchema } from "../../schemas/PesonalDataSchema";
 
 const PersonalData: React.FC = () => {
   const { data, setFormValues } = useFormData();
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const navigate = useNavigate();
+  const [errors, setErrors] = useState<{ [key: string]: string }>({})
+  const navigate = useNavigate()
 
   const handleNext = () => {
-    const result = personalDataSchema.safeParse(data)
+    const phoneUnmasked = data.phone.replace(/\D/g, "")
+    const result = personalDataSchema.safeParse({
+      ...data,
+      phone: phoneUnmasked,
+    });
+
     if (!result.success) {
-      const newErrors: { [key: string]: string } = {}
+      const newErrors: { [key: string]: string } = {};
       result.error.issues.forEach((issue) => {
-        const field = issue.path[0]
-        if (typeof field === "string") {
-          newErrors[field] = issue.message
-        }
-      })
-      setErrors(newErrors)
-      return
+        if (typeof issue.path[0] === "string") newErrors[issue.path[0]] = issue.message;
+      });
+      setErrors(newErrors);
+      return;
     }
     navigate("/address-job")
   };
-
   return (
     <FormBlank title="1/3: Личные данные" onNext={handleNext}>
       <Input
@@ -34,8 +35,9 @@ const PersonalData: React.FC = () => {
         label="Телефон:"
         value={data.phone}
         onChange={(val) => setFormValues({ phone: val })}
-        placeholder="0XXX XXX XXX"
         error={errors.phone}
+        mask="{0} (000) 000-000"
+        placeholder="{0} (000) 000-000"
       />
       <Input
         label="Имя:"
