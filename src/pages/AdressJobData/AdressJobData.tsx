@@ -4,6 +4,7 @@ import Select from "../../components/Form/Select/Select";
 import { useFormData } from "../../hooks/useFormData";
 import { useNavigate } from "react-router-dom";
 import FormBlank from "../../components/Form/FormBlank/FormBlank";
+import { addressJobSchema } from "../../schemas/AdressJobDataSchema";
 
 interface Job {
   name: string;
@@ -25,15 +26,22 @@ const AddressJobData: React.FC = () => {
   }, []);
 
   const handleNext = () => {
-    const newErrors: { [key: string]: string } = {};
-    if (!data.workplace) newErrors.workplace = "Место работы обязательно";
-    if (!data.address) newErrors.address = "Адрес обязателен";
-
-    setErrors(newErrors);
-
-    if (Object.keys(newErrors).length === 0) {
-      navigate("/loan");
+    const result = addressJobSchema.safeParse({
+      workplace: data.workplace,
+      address: data.address,
+    });
+    if (!result.success) {
+      const formattedErrors: { [key: string]: string } = {}
+      result.error.issues.forEach((issue) => {
+        const field = issue.path[0]
+        if (typeof field === "string") {
+          formattedErrors[field] = issue.message
+        }
+      });
+      setErrors(formattedErrors)
+      return
     }
+    navigate("/loan");
   };
 
   const handleBack = () => window.history.back();

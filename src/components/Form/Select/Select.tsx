@@ -25,7 +25,7 @@ const Select: React.FC<SelectProps> = ({ label, value, onChange, options, error 
                     </option>
                 ))}
             </select>
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p className={styles.error}>{error}</p>}
         </div>
     );
 };

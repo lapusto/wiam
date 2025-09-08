@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Range from "../../components/Form/Range/Range";
 import Modal from "../../components/Modal/Modal";
 import FormBlank from "../../components/Form/FormBlank/FormBlank";
+import { loanSchema } from "../../schemas/LoanDataSchema";
 
 const LoanData: React.FC = () => {
     const { data, setFormValues } = useFormData();
@@ -12,16 +13,24 @@ const LoanData: React.FC = () => {
     const navigate = useNavigate();
 
     const handleNext = () => {
-        const newErrors: { [key: string]: string } = {};
-        if (!data.loanAmount) newErrors.loanAmount = "Сумма займа обязательна";
-        if (!data.loanTerm) newErrors.loanTerm = "Срок займа обязателен";
-
-        setErrors(newErrors);
-
-        if (Object.keys(newErrors).length === 0) {
-            setIsModalOpen(true);
+        const result = loanSchema.safeParse({
+            loanAmount: Number(data.loanAmount),
+            loanTerm: Number(data.loanTerm),
+        })
+        if (!result.success) {
+            const formattedErrors: { [key: string]: string } = {}
+            result.error.issues.forEach((issue) => {
+                const field = issue.path[0]
+                if (typeof field === "string") {
+                    formattedErrors[field] = issue.message
+                }
+            })
+            setErrors(formattedErrors)
+            return
         }
-    };
+        setIsModalOpen(true);
+    }
+
 
     const handleBack = () => window.history.back();
 

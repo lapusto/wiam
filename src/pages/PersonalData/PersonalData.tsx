@@ -4,6 +4,7 @@ import Select from "../../components/Form/Select/Select";
 import { useFormData } from "../../hooks/useFormData";
 import { useNavigate } from "react-router-dom";
 import FormBlank from "../../components/Form/FormBlank/FormBlank";
+import { personalDataSchema } from "../../schemas/PesonalDataSchema";
 
 const PersonalData: React.FC = () => {
   const { data, setFormValues } = useFormData();
@@ -11,18 +12,19 @@ const PersonalData: React.FC = () => {
   const navigate = useNavigate();
 
   const handleNext = () => {
-    const newErrors: { [key: string]: string } = {};
-
-    if (!data.phone) newErrors.phone = "Телефон обязателен";
-    if (!data.firstName) newErrors.firstName = "Имя обязательно";
-    if (!data.lastName) newErrors.lastName = "Фамилия обязательна";
-    if (!data.gender) newErrors.gender = "Пол обязателен";
-
-    setErrors(newErrors);
-
-    if (Object.keys(newErrors).length === 0) {
-      navigate("/address-job");
+    const result = personalDataSchema.safeParse(data)
+    if (!result.success) {
+      const newErrors: { [key: string]: string } = {}
+      result.error.issues.forEach((issue) => {
+        const field = issue.path[0]
+        if (typeof field === "string") {
+          newErrors[field] = issue.message
+        }
+      })
+      setErrors(newErrors)
+      return
     }
+    navigate("/address-job")
   };
 
   return (

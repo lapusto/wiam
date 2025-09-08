@@ -25,4 +25,7 @@ input {
 }
 .error {
   color: $color-danger;
+  font-size: $error-font-size;
+  font-weight: $error-font-weight;
+  margin-top: 5px;
 }
