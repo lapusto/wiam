@@ -18,14 +18,14 @@ const FormBlank: React.FC<FormBlankProps> = ({
   nextLabel = "Далее",
 }) => {
   return (
-    <div className={styles.formContainer}>
+    <form className={styles.formContainer}>
       <h1>{title}</h1>
       <div className={styles.formBody}>{children}</div>
       <div className={styles.formActions}>
         {onBack && <Button onClick={onBack}>Назад</Button>}
         {onNext && <Button onClick={onNext}>{nextLabel}</Button>}
       </div>
-    </div>
+    </form>
   );
 };
 

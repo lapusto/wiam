@@ -9,6 +9,10 @@
   justify-content: center;
   z-index: 1000;
   animation: fadeIn 0.3s ease forwards;
+  @media (max-width: 480px) {
+    align-items: flex-start;
+    padding-top: 150px;
+  }
 }
 
 .modal {

@@ -11,6 +11,15 @@
   max-width: 600px;
   height: 500px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 480px) {
+    height: 450px;
+    margin: 40px 16px;
+    padding: 20px 30px 15px;
+    h1 {
+      font-size: 18px;
+    }
+  }
 }
 
 .formBody {

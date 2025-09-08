@@ -13,12 +13,14 @@ interface InputProps {
 }
 
 const Input: React.FC<InputProps> = ({ label, value, onChange, placeholder, error, type = "text", mask }) => {
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null)
+    const inputId = label.toLowerCase().replace(/\s/g, "")
     return (
         <div className={styles.inputContainer}>
-            <label>{label}</label>
+            <label htmlFor={inputId}>{label}</label>
             {mask ? (
                 <IMaskInput
+                    id={inputId}
                     mask={mask}
                     value={value}
                     inputRef={inputRef}
@@ -27,6 +29,7 @@ const Input: React.FC<InputProps> = ({ label, value, onChange, placeholder, erro
                 />
             ) : (
                 <input
+                    id={inputId}
                     type={type}
                     value={value}
                     onChange={(e) => onChange(e.target.value)}

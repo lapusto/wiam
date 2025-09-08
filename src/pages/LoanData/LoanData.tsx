@@ -19,7 +19,23 @@ const LoanData: React.FC = () => {
             loanAmount: Number(data.loanAmount),
             loanTerm: Number(data.loanTerm),
         }
-        validate(valuesToValidate, () => setIsModalOpen(true));
+        validate(valuesToValidate, async () => {
+            try {
+                const response = await fetch("https://dummyjson.com/products/add", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ title: `${data.firstName} ${data.lastName}` }),
+                });
+
+                const result = await response.json();
+                console.log("API response:", result);
+
+                setIsModalOpen(true);
+
+            } catch (error) {
+                console.error("Ошибка при отправке:", error);
+            }
+        });
     }
 
     const handleBack = () => window.history.back();
