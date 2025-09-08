@@ -24,7 +24,7 @@ const PersonalData: React.FC = () => {
 
   return (
     <FormBlank title="1/3: Личные данные" onNext={handleNext}>
-      <Input
+      <Input // при большем количестве инпутов я бы использовала объекты с конфигурациями и отрисовывала массив инпутов через map
         type="tel"
         label="Телефон:"
         value={data.phone}

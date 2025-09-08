@@ -6,6 +6,7 @@ import Modal from "../../components/Modal/Modal";
 import FormBlank from "../../components/Form/FormBlank/FormBlank";
 import { loanSchema } from "../../schemas/LoanDataSchema";
 import { useFormValidation } from "../../hooks/useFormValidate";
+import { DEFAULT_FORM_DATA } from "../../context/FormContext";
 
 const LoanData: React.FC = () => {
     const { data, setFormValues } = useFormData();
@@ -24,16 +25,7 @@ const LoanData: React.FC = () => {
     const handleBack = () => window.history.back();
 
     const handleCloseModal = () => {
-        setFormValues({
-            phone: "",
-            firstName: "",
-            lastName: "",
-            gender: "",
-            workplace: "",
-            address: "",
-            loanAmount: undefined,
-            loanTerm: undefined,
-        });
+        setFormValues(DEFAULT_FORM_DATA);
         setIsModalOpen(false);
         navigate("/");
     };

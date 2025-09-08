@@ -1,13 +1,8 @@
 import { useState, type ReactNode } from "react";
-import { FormContext, type FormData } from "./FormContext";
+import { DEFAULT_FORM_DATA, FormContext, type FormData } from "./FormContext";
 
 export const FormProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [data, setData] = useState<FormData>({
-        phone: "",
-        firstName: "",
-        lastName: "",
-        gender: "",
-    });
+    const [data, setData] = useState<FormData>(DEFAULT_FORM_DATA);
 
     const setFormValues = (values: Partial<FormData>) => {
         setData((prev) => ({ ...prev, ...values }));

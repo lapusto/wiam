@@ -11,6 +11,17 @@ export interface FormData {
   loanTerm?: number;
 }
 
+export const DEFAULT_FORM_DATA: FormData = {
+  phone: "",
+  firstName: "",
+  lastName: "",
+  gender: "",
+  workplace: "",
+  address: "",
+  loanAmount: undefined,
+  loanTerm: undefined,
+};
+
 export interface FormContextType {
   data: FormData;
   setFormValues: (values: Partial<FormData>) => void;
