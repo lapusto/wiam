@@ -4,7 +4,7 @@ export interface FormData {
   phone: string;
   firstName: string;
   lastName: string;
-  gender: string;
+  gender: "" | "male" | "female";
   workplace?: string;
   address?: string;
   loanAmount?: number;

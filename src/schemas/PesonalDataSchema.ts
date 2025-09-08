@@ -6,9 +6,7 @@ export const personalDataSchema = z.object({
     .regex(/^0\d{9}$/, "Телефон должен начинаться с 0 и далее 9 цифр"),
   firstName: z.string().min(1, "Введите имя"),
   lastName: z.string().min(1, "Введите фамилию"),
-  gender: z.enum(["male", "female"], {
-    message: "Укажите пол",
-  }),
+  gender: z.enum(["male", "female"], { message: "Выберите пол" })
 });
 
 export type PersonalDataSchema = z.infer<typeof personalDataSchema>;

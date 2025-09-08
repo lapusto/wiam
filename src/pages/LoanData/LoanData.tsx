@@ -5,32 +5,21 @@ import Range from "../../components/Form/Range/Range";
 import Modal from "../../components/Modal/Modal";
 import FormBlank from "../../components/Form/FormBlank/FormBlank";
 import { loanSchema } from "../../schemas/LoanDataSchema";
+import { useFormValidation } from "../../hooks/useFormValidate";
 
 const LoanData: React.FC = () => {
     const { data, setFormValues } = useFormData();
-    const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
+    const { errors, validate } = useFormValidation(loanSchema);
 
     const handleNext = () => {
-        const result = loanSchema.safeParse({
+        const valuesToValidate = {
             loanAmount: Number(data.loanAmount),
             loanTerm: Number(data.loanTerm),
-        })
-        if (!result.success) {
-            const formattedErrors: { [key: string]: string } = {}
-            result.error.issues.forEach((issue) => {
-                const field = issue.path[0]
-                if (typeof field === "string") {
-                    formattedErrors[field] = issue.message
-                }
-            })
-            setErrors(formattedErrors)
-            return
         }
-        setIsModalOpen(true);
+        validate(valuesToValidate, () => setIsModalOpen(true));
     }
-
 
     const handleBack = () => window.history.back();
 

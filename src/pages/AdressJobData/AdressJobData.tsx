@@ -5,6 +5,7 @@ import { useFormData } from "../../hooks/useFormData";
 import { useNavigate } from "react-router-dom";
 import FormBlank from "../../components/Form/FormBlank/FormBlank";
 import { addressJobSchema } from "../../schemas/AdressJobDataSchema";
+import { useFormValidation } from "../../hooks/useFormValidate";
 
 interface Job {
   name: string;
@@ -15,7 +16,7 @@ interface Job {
 const AddressJobData: React.FC = () => {
   const { data, setFormValues } = useFormData();
   const [jobs, setJobs] = useState<Job[]>([]);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const { errors, validate } = useFormValidation(addressJobSchema);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,23 +27,12 @@ const AddressJobData: React.FC = () => {
   }, []);
 
   const handleNext = () => {
-    const result = addressJobSchema.safeParse({
-      workplace: data.workplace,
-      address: data.address,
-    });
-    if (!result.success) {
-      const formattedErrors: { [key: string]: string } = {}
-      result.error.issues.forEach((issue) => {
-        const field = issue.path[0]
-        if (typeof field === "string") {
-          formattedErrors[field] = issue.message
-        }
-      });
-      setErrors(formattedErrors)
-      return
+    const valuesToValidate = {
+      workplace: data.workplace || "",
+      address: data.address || "",
     }
-    navigate("/loan");
-  };
+    validate(valuesToValidate, () => navigate("/loan"))
+  }
 
   const handleBack = () => window.history.back();
 

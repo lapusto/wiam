@@ -1,33 +1,27 @@
-import { useState } from "react";
 import Input from "../../components/Form/Input/Input";
 import Select from "../../components/Form/Select/Select";
 import { useFormData } from "../../hooks/useFormData";
 import { useNavigate } from "react-router-dom";
 import FormBlank from "../../components/Form/FormBlank/FormBlank";
 import { personalDataSchema } from "../../schemas/PesonalDataSchema";
+import { useFormValidation } from "../../hooks/useFormValidate";
 
 const PersonalData: React.FC = () => {
+
   const { data, setFormValues } = useFormData();
-  const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const navigate = useNavigate()
+  const { errors, validate } = useFormValidation(personalDataSchema)
 
   const handleNext = () => {
-    const phoneUnmasked = data.phone.replace(/\D/g, "")
-    const result = personalDataSchema.safeParse({
+    const phoneUnmasked = data.phone.replace(/\D/g, "");
+    const valuesToValidate = {
       ...data,
       phone: phoneUnmasked,
-    });
-
-    if (!result.success) {
-      const newErrors: { [key: string]: string } = {};
-      result.error.issues.forEach((issue) => {
-        if (typeof issue.path[0] === "string") newErrors[issue.path[0]] = issue.message;
-      });
-      setErrors(newErrors);
-      return;
+      gender: data.gender as "male" | "female",
     }
-    navigate("/address-job")
-  };
+    validate(valuesToValidate, () => navigate("/address-job"))
+  }
+
   return (
     <FormBlank title="1/3: Личные данные" onNext={handleNext}>
       <Input
@@ -53,8 +47,8 @@ const PersonalData: React.FC = () => {
       />
       <Select
         label="Пол:"
-        value={data.gender}
-        onChange={(val) => setFormValues({ gender: val })}
+        value={data.gender ?? ""}
+        onChange={val => setFormValues({ gender: val === "male" || val === "female" ? val : undefined })}
         options={[
           { label: "Выберите пол", value: "" },
           { label: "Мужской", value: "male" },
