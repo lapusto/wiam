@@ -1,0 +1,26 @@
+@use "../../../styles/variables.scss" as *;
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: $color-blank;
+  padding: 40px 60px 30px;
+  margin: 100px auto;
+  border-radius: 12px;
+  max-width: 600px;
+  height: 500px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.formBody {
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}

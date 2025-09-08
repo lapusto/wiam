@@ -1,4 +1,6 @@
 import React from "react";
+import styles from "./Modal.module.scss"
+import Button from "../Button/Button";
 
 interface ModalProps {
     isOpen: boolean;
@@ -10,12 +12,12 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     if (!isOpen) return null;
 
     return (
-        <div>
-            <div>
+        <div className={styles.overlay}>
+            <div className={styles.modal}>
                 {children}
-                <button onClick={onClose} style={{ marginTop: "1rem", padding: "0.5rem 1rem", cursor: "pointer" }}>
+                <Button onClick={onClose}>
                     Закрыть
-                </button>
+                </Button>
             </div>
         </div>
     );

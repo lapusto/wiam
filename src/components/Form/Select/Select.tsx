@@ -1,3 +1,6 @@
+import styles from "./Select.module.scss";
+
+
 interface Option {
     label: string;
     value: string;
@@ -13,11 +16,11 @@ interface SelectProps {
 
 const Select: React.FC<SelectProps> = ({ label, value, onChange, options, error }) => {
     return (
-        <div style={{ marginBottom: "1rem" }}>
+        <div className={styles.selectContainer}>
             <label>{label}</label>
             <select value={value} onChange={(e) => onChange(e.target.value)}>
                 {options.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
+                    <option key={opt.value} value={opt.value} className={styles.option}>
                         {opt.label}
                     </option>
                 ))}

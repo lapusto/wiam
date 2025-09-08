@@ -1,3 +1,5 @@
+import styles from "./Input.module.scss"
+
 interface InputProps {
     label: string;
     value: string;
@@ -9,7 +11,7 @@ interface InputProps {
 
 const Input: React.FC<InputProps> = ({ label, value, onChange, placeholder, error, type = "text" }) => {
     return (
-        <div style={{ marginBottom: "1rem" }}>
+        <div className={styles.inputContainer}>
             <label>{label}</label>
             <input
                 type={type}
@@ -17,7 +19,7 @@ const Input: React.FC<InputProps> = ({ label, value, onChange, placeholder, erro
                 onChange={(e) => onChange(e.target.value)}
                 placeholder={placeholder}
             />
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p className={styles.error}>{error}</p>}
         </div>
     );
 };

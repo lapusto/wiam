@@ -1,21 +1,19 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useFormData } from "../../hooks/useFormData";
 import { useNavigate } from "react-router-dom";
-import Button from "../../components/Button/Button";
 import Range from "../../components/Form/Range/Range";
 import Modal from "../../components/Modal/Modal";
+import FormBlank from "../../components/Form/FormBlank/FormBlank";
 
-const LoanForm: React.FC = () => {
+const LoanData: React.FC = () => {
     const { data, setFormValues } = useFormData();
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
 
-
     const handleNext = () => {
         const newErrors: { [key: string]: string } = {};
-
-        if (!data.loanAmount) newErrors.loanSum = "Сумма займа обязательна";
+        if (!data.loanAmount) newErrors.loanAmount = "Сумма займа обязательна";
         if (!data.loanTerm) newErrors.loanTerm = "Срок займа обязателен";
 
         setErrors(newErrors);
@@ -25,9 +23,7 @@ const LoanForm: React.FC = () => {
         }
     };
 
-    const handleBack = () => {
-        window.history.back();
-    };
+    const handleBack = () => window.history.back();
 
     const handleCloseModal = () => {
         setFormValues({
@@ -41,24 +37,23 @@ const LoanForm: React.FC = () => {
             loanTerm: undefined,
         });
         setIsModalOpen(false);
-        navigate("/")
+        navigate("/");
     };
 
     return (
         <>
-            <div>
-                <h1>Форма: Параметры займа</h1>
+            <FormBlank title="3/3: Параметры займа" onBack={handleBack} onNext={handleNext} nextLabel="Подать заявку">
                 <Range
-                    label="Сумма займа:"
+                    label="Сумма займа, $"
                     value={data.loanAmount || 200}
                     min={200}
                     max={1000}
                     step={100}
                     onChange={(val) => setFormValues({ loanAmount: val })}
-                    error={errors.loanSum}
+                    error={errors.loanAmount}
                 />
                 <Range
-                    label="Срок займа"
+                    label="Срок займа, дни"
                     value={data.loanTerm || 10}
                     min={10}
                     max={30}
@@ -66,21 +61,15 @@ const LoanForm: React.FC = () => {
                     onChange={(val) => setFormValues({ loanTerm: val })}
                     error={errors.loanTerm}
                 />
-                <div>
-                    <Button onClick={handleBack}>Назад</Button>
-                    <Button onClick={handleNext}>
-                        Подать заявку
-                    </Button>
-                </div>
-            </div>
+            </FormBlank>
+
             <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
                 <p>
                     Поздравляем, {data.lastName} {data.firstName}. Вам одобрена сумма {data.loanAmount}$ на {data.loanTerm} дней.
                 </p>
             </Modal>
         </>
-
     );
 };
 
-export default LoanForm;
+export default LoanData;

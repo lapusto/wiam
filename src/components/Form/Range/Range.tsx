@@ -1,3 +1,5 @@
+import styles from "./Range.module.scss";
+
 interface RangeProps {
     label: string;
     value: number;
@@ -10,9 +12,10 @@ interface RangeProps {
 
 const Range: React.FC<RangeProps> = ({ label, value, onChange, min, max, step = 1, error }) => {
     return (
-        <div style={{ marginBottom: "1rem" }}>
-            <label>{label}: {value}</label>
+        <div className={styles.rangeContainer}>
+            <label>{label}: <span>{value}</span></label>
             <input
+                className={styles.range}
                 type="range"
                 min={min}
                 max={max}
